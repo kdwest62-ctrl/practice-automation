@@ -1,39 +1,72 @@
-task_list = []
-
-print("To-Do List Menu:\n1. View Tasks\n2. Add a task\n3. Remove a Task\n4. Exit")
-
+incomplete = []
+complete = []
+print("1. View Tasks\n2. Add a Task\n3. Complete a Task\n4. Remove a Task\n5. Exit")
 while True:
-    user_choice = input("Enter your choice: ")
+    user_choice = input("Choose option: ")
     if user_choice == '1':
-        if len(task_list) == 0:
-            print("No tasks")
-        else:
-            print(f"Tasks: {task_list}")
+        print(f"Incomplete: {incomplete}")
+        print(f"Complete: {complete}")
     elif user_choice == '2':
-        new_task = input("Enter a new task: ")
-        if new_task in task_list:
+        new = input("Enter new task: ")
+        if new in incomplete:
             print("Task already exists")
-            task_exist = input("Continue? (y/n): ")
-            if task_exist == 'y':
-                task_list.append(new_task)
-                print("Task added")
+            decide = input("Continue? (y/n): ")
+            if decide == 'y':
+                incomplete.append(new)
+                print("Task added to incomplete")
         else:
-            task_list.append(new_task)
-            print("Task added")
+            incomplete.append(new)
+            print("Task added to incomplete")
     elif user_choice == '3':
-        if len(task_list) == 0:
-            print("No tasks")
+        print(f"{incomplete}")
+        completed = input("Completed task: ")
+        if completed in incomplete:
+            for item in incomplete:
+                if item == completed:
+                    complete.append(item)
+                    incomplete.remove(item)
+                else:
+                    continue
+            print("Task added to complete")
         else:
-            print(f"Tasks: {task_list}")
-            remove_task = input("Remove task: ")
-            if remove_task in task_list:
-                for task in task_list:
-                    task_list.remove(task)
-                    print("Task removed")
-            else:
-                print("Task does not exist")
+            print("Task not found")
     elif user_choice == '4':
+        print("1. Incomplete, 2. Complete")
+        choice = input("Choose list: ")
+        if choice == "1":
+            if len(incomplete) == 0:
+                print("List empty")
+            else:
+                print(f"{incomplete}")
+                remove_task = input("Remove task: ")
+                if remove_task in incomplete:
+                    for item in incomplete:
+                        if item == remove_task:
+                            incomplete.remove(item)
+                            print("Task removed")
+                        else:
+                            continue
+                else:
+                    print("Task not found")
+        elif choice == "2":
+            if len(complete) == 0:
+                print("List empty")
+            else:
+                print(f"{complete}")
+                remove_task = input("Remove task: ")
+                if remove_task in complete:
+                    for item in complete:
+                        if item == remove_task:
+                            complete.remove(item)
+                            print("Task removed")
+                        else:
+                            continue
+                else:
+                    print("Task not found")
+        else:
+            print("Invalid choice")
+    elif user_choice == '5':
         print("Program closed")
-        exit()
+        break
     else:
         print("Invalid choice")
