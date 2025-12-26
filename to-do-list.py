@@ -1,6 +1,6 @@
 incomplete = []
 complete = []
-print("1. View Tasks\n2. Add a Task\n3. Complete a Task\n4. Remove a Task\n5. Exit")
+print("1. View Tasks\n2. Add a Task\n3. Complete a Task\n4. Remove a Task\n5. Save a Task\n6. Exit")
 while True:
     user_choice = input("Choose option: ")
     if user_choice == '1':
@@ -66,6 +66,13 @@ while True:
         else:
             print("Invalid choice")
     elif user_choice == '5':
+        filename = input("Enter filename: ")
+        print(f"Incomplete {incomplete}\nComplete {complete}")
+        write = input("Write task: ")
+        with open(filename, 'a') as file:
+            file.write(write + "\n")
+        print("Task successfully written")
+    elif user_choice == '6':
         print("Program closed")
         break
     else:
