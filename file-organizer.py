@@ -1,7 +1,8 @@
 import os
 import shutil
 
-os.chdir(r'')
+path = input("Path: ")
+os.chdir(path)
 
 if not os.path.isdir('Setups'):
     os.mkdir('Setups')
