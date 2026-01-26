@@ -26,15 +26,15 @@ for item in items:
     if os.path.isfile(item):
         draft_list.append(file_extension(item))
 file_extensions = set(draft_list)
+print(file_extensions)
 
 # user chooses the file extension/s to organize
 extensions_list = []
-print(f"File extensions inside the path: {file_extensions}")
+print(f"File extensions inside the path: {len(file_extensions)}")
 total_ext = int(input("Number of file extensions to organize: "))
-print("Names:")
 ext_count = 1
 while ext_count <= total_ext:
-    extension = input(f"File extension {ext_count}: ")
+    extension = input(f"File extension {ext_count} name: ")
     if extension not in file_extensions:
         print("File extension not found. Try again")
     else:
@@ -43,18 +43,22 @@ while ext_count <= total_ext:
 
 # user chooses which directories the file extension/s go
 destinations_list = []
-print(f"Directories created: {dirs_list}")
+print(f"Directories: {dirs_list}")
 for item in extensions_list:
     destination = input(f"Directory for {item}: ")
-    destinations_list.append(destination)
+    if destination not in dirs_list:
+        print("Directory not available")
+    else:
+        destinations_list.append(destination)
 blueprint = dict(zip(extensions_list, destinations_list))
 
 # main process
-items = os.listdir(os.getcwd())
-for item in items:
-    if os.path.isfile(item):
-        if file_extension(item) in blueprint.keys():
-            shutil.move(item, os.path.join(os.getcwd(), blueprint[file_extension(item)]))
+if len(blueprint.values()) != 0:
+    items = os.listdir(os.getcwd())
+    for item in items:
+        if os.path.isfile(item):
+            if file_extension(item) in blueprint.keys():
+                shutil.move(item, os.path.join(os.getcwd(), blueprint[file_extension(item)]))
 
 # feedback
-print("File organization successful")
+    print("File organization successful")
