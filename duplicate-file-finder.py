@@ -26,4 +26,4 @@ for item in path2_files:
 if len(duplicates) == 0:
     print("No duplicate files")
 else:
-    print(f"Duplicate files found: {set(duplicates)}")
+    print(f"Duplicate files: {set(duplicates)}")
