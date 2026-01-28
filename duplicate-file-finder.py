@@ -1,13 +1,15 @@
 import os
 
 path1_files = []
-os.chdir(r'')
+path1 = input("Path 1: ")
+os.chdir(path1)
 path1 = os.listdir(os.getcwd())
 for item in path1:
     if os.path.isfile(item):
         path1_files.append(item)
 path2_files = []
-os.chdir(r'')
+path2 = input("Path 2: ")
+os.chdir(path2)
 path2 = os.listdir(os.getcwd())
 for item in path2:
     if os.path.isfile(item):
