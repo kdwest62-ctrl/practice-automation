@@ -1,14 +1,19 @@
 import os
 import shutil
 
-os.chdir('') # destination
-os.mkdir('Backup')
+destination = input("Destination path: ")
+os.chdir(destination)
+if not os.path.isdir('Backup'):
+    os.mkdir('Backup')
 
-os.chdir('') # source
+source = input("Source path: ")
+os.chdir(source)
+extension = input("File extension: ")
+count = 0
 items = os.listdir(os.getcwd())
 for item in items:
     if os.path.isfile(item):
-        extension = "".join([item[-3], item[-2], item[-1]])
-        if extension == 'exe':
-            shutil.copy2(item, '' + '\\Backup')
-print("File backup successful")
+        if item.endswith(extension):
+            shutil.copy(item, '')
+            count += 1
+print(f"{count} files copied")
