@@ -1,26 +1,16 @@
 import os
 
-path1_files = []
 path1 = input("Path 1: ")
-os.chdir(path1)
-path1_items = os.listdir(os.getcwd())
-for item in path1_items:
-    if os.path.isfile(item):
-        path1_files.append(item)
-path2_files = []
+path1_items = os.listdir(path1)
 path2 = input("Path 2: ")
-os.chdir(path2)
-path2_items = os.listdir(os.getcwd())
-for item in path2_items:
-    if os.path.isfile(item):
-        path2_files.append(item)
+path2_items = os.listdir(path2)
 
 duplicates = []
-for item in path1_files:
-    if item in path2_files:
+for item in path1_items:
+    if item in path2_items:
         duplicates.append(item)
-for item in path2_files:
-    if item in path1_files:
+for item in path2_items:
+    if item in path1_items:
         duplicates.append(item)
 
 if len(duplicates) == 0:
