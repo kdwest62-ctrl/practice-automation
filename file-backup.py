@@ -16,7 +16,7 @@ try:
     for item in items:
         if os.path.isfile(item):
             if item.endswith(extension):
-                shutil.copy(item, dst_dir)
+                shutil.copy2(item, dst_dir)
                 count += 1
     print(f"{count} files copied")
 except FileExistsError:
