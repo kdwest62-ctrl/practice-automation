@@ -40,7 +40,7 @@ try:
                     ext_count += 1
 
             destinations_list = []
-            print(f"Directories: {dirs_list}")
+            print(dirs_list)
             for item in extensions_list:
                 destination = input(f"Directory for {item}: ")
                 if destination not in dirs_list:
@@ -56,6 +56,17 @@ try:
                         if file_extension(item) in organizer.keys():
                             shutil.move(item, os.path.join(os.getcwd(), organizer[file_extension(item)]))
                 print("File organization successful")
+
+                compress = input("Compress directory? (y/n): ")
+                if compress == 'y':
+                    print(dirs_list)
+                    name = input("Directory name: ")
+                    if name in dirs_list:
+                        archive_name = input("Archive name: ")
+                        shutil.make_archive(archive_name, 'zip', os.path.join(os.getcwd(), name))
+                        print(f"Success! Directory {name} compressed")
+                    else:
+                        print("Directory not found")
 except FileExistsError:
     print("Directory already exists")
 except FileNotFoundError:
