@@ -1,14 +1,12 @@
 import os
-from pathlib import Path
 
 source = input("Path: ")
-path = Path(source)
 
 files = []
 list2 = []
 duplicates = []
 
-for _, dirs, filename in os.walk(path):
+for _, dirs, filename in os.walk(source):
     for item in dirs:
         if os.path.isfile(item):
             files.append(item)
