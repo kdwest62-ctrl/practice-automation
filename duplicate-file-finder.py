@@ -28,7 +28,9 @@ else:
     remove = input("Remove duplicates? (y/n): ")
     if remove == 'y':
         total = int(input("Number of duplicates to remove: "))
-        if total != 0 and total <= len(duplicates):
+        if total <= 0 or total > len(duplicates):
+            print(f"There are {len(duplicates)} duplicates")
+        else:
             count = 1
             while count <= total:
                 filename = input(f"Filename {count}: ")
