@@ -24,3 +24,17 @@ if len(duplicates) == 0:
 else:
     for item in duplicates:
         print(item)
+
+    remove = input("Remove duplicates? (y/n): ")
+    if remove == 'y':
+        total = int(input("Number of duplicates to remove: "))
+        if total != 0 and total <= len(duplicates):
+            count = 1
+            while count <= total:
+                filename = input(f"Filename {count}: ")
+                if filename in duplicates:
+                    os.remove(os.path.join(source, filename))
+                    count += 1
+                else:
+                    print("File not a duplicate")
+            print(f"Success! {total} duplicates removed")
