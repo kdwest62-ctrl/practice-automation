@@ -55,7 +55,14 @@ try:
                     if os.path.isfile(item):
                         if file_extension(item) in organizer.keys():
                             shutil.move(item, os.path.join(os.getcwd(), organizer[file_extension(item)]))
-                print("File organization successful")
+
+                dirs_files = []
+                for item in dirs_list:
+                    length = len(os.listdir(os.path.join(os.getcwd(), item)))
+                    dirs_files.append(length)
+                files_count = dict(zip(dirs_list, dirs_files))
+                for key, value in files_count.items():
+                    print(f"Files in {key}: {value}")
 
                 compress = input("Compress directory? (y/n): ")
                 if compress == 'y':
