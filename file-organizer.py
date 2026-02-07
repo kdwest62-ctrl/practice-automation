@@ -62,7 +62,7 @@ try:
                     dirs_files.append(length)
                 files_count = dict(zip(dirs_list, dirs_files))
                 for key, value in files_count.items():
-                    print(f"Files in {key}: {value}")
+                    print(f"Files moved to {key}: {value}")
 
                 compress = input("Compress directory? (y/n): ")
                 if compress == 'y':
