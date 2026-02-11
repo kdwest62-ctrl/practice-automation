@@ -1,43 +1,42 @@
 import os
+from pathlib import Path
 
-source = input("Path: ")
+source = input("Source path: ")
 if os.path.exists(source):
-    files = []
+    list1 = []
     list2 = []
-    duplicates = []
-
-    for _, dirs, filename in os.walk(source):
+    list3 = []
+    list4 = []
+    for root, dirs, files in os.walk(source):
         for item in dirs:
             if os.path.isfile(item):
-                files.append(item)
-        for item in filename:
-            files.append(item)
+                a = os.path.join(root, item)
+                list1.append(a)
+        for item in files:
+            a = os.path.join(root, item)
+            list1.append(a)
 
-    for item in files:
-        if item not in list2:
-            list2.append(item)
+    for item in list1:
+        path = Path(item)
+        if path.name in list2:
+            list3.append(path.name)
         else:
-            duplicates.append(item)
+            list2.append(path.name)
 
-    if len(duplicates) == 0:
+    if len(set(list3)) == 0:
         print("No duplicates")
     else:
-        for item in duplicates:
+        while True:
+            index = 0
+            for item in list1:
+                path = Path(item)
+                if path.name == list3[index]:
+                    list4.append(item)
+            index += 1
+            if index >= len(set(list3)):
+                break
+        for item in list4:
             print(item)
-        remove = input("Remove duplicates? (y/n): ")
-        if remove == 'y':
-            total = int(input("Number of duplicates to remove: "))
-            if total <= 0 or total > len(duplicates):
-                print(f"There are {len(duplicates)} duplicates")
-            else:
-                count = 1
-                while count <= total:
-                    filename = input(f"Filename {count}: ")
-                    if filename in duplicates:
-                        os.remove(os.path.join(source, filename))
-                        count += 1
-                    else:
-                        print("File not a duplicate")
-                print(f"Success! {total} duplicates removed")
+
 else:
     print("Path not found")
