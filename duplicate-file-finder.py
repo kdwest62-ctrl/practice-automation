@@ -26,8 +26,8 @@ if os.path.exists(source):
     if len(set(list3)) == 0:
         print("No duplicates")
     else:
+        index = 0
         while True:
-            index = 0
             for item in list1:
                 path = Path(item)
                 if path.name == list3[index]:
