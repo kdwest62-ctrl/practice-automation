@@ -38,5 +38,18 @@ if os.path.exists(source):
         for item in list4:
             print(item)
 
+        remove = input("Remove duplicates? (y/n): ")
+        if remove == 'y':
+            total = int(input("Number of duplicates to remove: "))
+            if total <= len(list4) and total != 0:
+                count = 1
+                while count <= total:
+                    remove_path = input(f"Remove path {count}: ")
+                    if remove_path in list4:
+                        os.remove(remove_path)
+                        count += 1
+                    else:
+                        print("Path not in list")
+                print("Success! Duplicates removed")
 else:
     print("Path not found")
