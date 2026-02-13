@@ -49,14 +49,17 @@ if os.path.exists(source):
         if remove == 'y':
             total = int(input("Number of duplicates to remove: "))
             if total <= len(list4) and total != 0:
-                count = 1
-                while count <= total:
-                    remove_path = input(f"Remove path {count}: ")
-                    if remove_path in list4:
-                        os.remove(remove_path)
+                removed = []
+                count = 0
+                while count != total:
+                    x = int(input("Num to be deleted: "))
+                    if x in keys:
+                        removed.append(x)
                         count += 1
                     else:
-                        print("Path not in list")
+                        print("Num not in list")
+                for item in removed:
+                    os.remove(dict1[item])
                 print("Success! Duplicates removed")
 else:
     print("Path not found")
