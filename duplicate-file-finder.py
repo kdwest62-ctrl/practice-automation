@@ -35,8 +35,15 @@ if os.path.exists(source):
             index += 1
             if index >= len(set(list3)):
                 break
-        for item in list4:
-            print(item)
+        keys = []
+        num = 0
+        while num != len(list4):
+            num += 1
+            keys.append(num)
+
+        dict1 = dict(zip(keys, list4))
+        for key, value in dict1.items():
+            print(key, value)
 
         remove = input("Remove duplicates? (y/n): ")
         if remove == 'y':
