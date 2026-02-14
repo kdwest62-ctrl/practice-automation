@@ -1,11 +1,8 @@
 import os
 import shutil
+from pathlib import Path
 
 try:
-    def file_extension(filename):
-        filename_split = filename.split('.')
-        return filename_split[-1]
-
     path = input("Source path: ")
     os.chdir(path)
 
@@ -19,13 +16,13 @@ try:
             dirs_list.append(dir_name)
             dir_count += 1
 
-        draft_list = []
+        file_extensions = []
         items = os.listdir(os.getcwd())
         for item in items:
             if os.path.isfile(item):
-                draft_list.append(file_extension(item))
-        file_extensions = set(draft_list)
-        print(file_extensions)
+                x = Path(item)
+                file_extensions.append(x.suffix)
+        print(set(file_extensions))
 
         extensions_list = []
         total_ext = int(input("Number of file extensions to organize: "))
@@ -53,8 +50,9 @@ try:
                 items = os.listdir(os.getcwd())
                 for item in items:
                     if os.path.isfile(item):
-                        if file_extension(item) in organizer.keys():
-                            shutil.move(item, os.path.join(os.getcwd(), organizer[file_extension(item)]))
+                        a = Path(item)
+                        if a.suffix in organizer.keys():
+                            shutil.move(item, os.path.join(os.getcwd(), organizer[a.suffix]))
 
                 dirs_files = []
                 for item in dirs_list:
