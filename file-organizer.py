@@ -4,74 +4,79 @@ from pathlib import Path
 
 try:
     path = input("Source path: ")
-    os.chdir(path)
+    if os.path.exists(path):
 
-    dirs_list = []
-    total_dirs = int(input("Number of directories to create: "))
-    if total_dirs != 0:
-        dir_count = 1
-        while dir_count <= total_dirs:
-            dir_name= input(f"Directory {dir_count} name: ")
-            os.mkdir(dir_name)
-            dirs_list.append(dir_name)
-            dir_count += 1
+        dirs_list = []
+        total_dirs = int(input("Number of directories to create: "))
+        if total_dirs != 0:
+            dir_count = 1
+            while dir_count <= total_dirs:
+                dir_name= input(f"Directory {dir_count} name: ")
+                os.mkdir(os.path.join(path, dir_name))
+                dirs_list.append(dir_name)
+                dir_count += 1
 
-        file_extensions = []
-        items = os.listdir(os.getcwd())
-        for item in items:
-            if os.path.isfile(item):
-                x = Path(item)
-                file_extensions.append(x.suffix)
-        print(set(file_extensions))
+            file_extensions = []
+            items = os.listdir(path)
+            for item in items:
+                file_path = os.path.join(path, item)
+                if os.path.isfile(file_path):
+                    x = Path(file_path)
+                    file_extensions.append(x.suffix)
+            print(set(file_extensions))
 
-        extensions_list = []
-        total_ext = int(input("Number of file extensions to organize: "))
-        if total_ext != 0:
-            ext_count = 1
-            while ext_count <= total_ext:
-                extension = input(f"File extension {ext_count} name: ")
-                if extension not in file_extensions:
-                    print("File extension not found. Try again")
-                else:
-                    extensions_list.append(extension)
-                    ext_count += 1
-
-            destinations_list = []
-            print(dirs_list)
-            for item in extensions_list:
-                destination = input(f"Directory for {item}: ")
-                if destination not in dirs_list:
-                    print("Directory not available")
-                else:
-                    destinations_list.append(destination)
-            organizer = dict(zip(extensions_list, destinations_list))
-
-            if len(organizer.values()) != 0:
-                items = os.listdir(os.getcwd())
-                for item in items:
-                    if os.path.isfile(item):
-                        a = Path(item)
-                        if a.suffix in organizer.keys():
-                            shutil.move(item, os.path.join(os.getcwd(), organizer[a.suffix]))
-
-                dirs_files = []
-                for item in dirs_list:
-                    length = len(os.listdir(os.path.join(os.getcwd(), item)))
-                    dirs_files.append(length)
-                files_count = dict(zip(dirs_list, dirs_files))
-                for key, value in files_count.items():
-                    print(f"Files moved to {key}: {value}")
-
-                compress = input("Compress directory? (y/n): ")
-                if compress == 'y':
-                    print(dirs_list)
-                    name = input("Directory name: ")
-                    if name in dirs_list:
-                        archive_name = input("Archive name: ")
-                        shutil.make_archive(archive_name, 'zip', os.path.join(os.getcwd(), name))
-                        print(f"Success! Directory {name} compressed")
+            extensions_list = []
+            total_ext = int(input("Number of file extensions to organize: "))
+            if total_ext != 0:
+                ext_count = 1
+                while ext_count <= total_ext:
+                    extension = input(f"File extension {ext_count} name: ")
+                    if extension not in file_extensions:
+                        print("File extension not found. Try again")
                     else:
-                        print("Directory not found")
+                        extensions_list.append(extension)
+                        ext_count += 1
+
+                destinations_list = []
+                print(dirs_list)
+                for item in extensions_list:
+                    destination = input(f"Directory for {item}: ")
+                    if destination not in dirs_list:
+                        print("Directory not available")
+                    else:
+                        destinations_list.append(destination)
+                organizer = dict(zip(extensions_list, destinations_list))
+
+                if len(organizer.values()) != 0:
+                    items = os.listdir(path)
+                    for item in items:
+                        file_path = os.path.join(path, item)
+                        if os.path.isfile(file_path):
+                            a = Path(file_path)
+                            if a.suffix in organizer.keys():
+                                shutil.move(file_path, os.path.join(path, organizer[a.suffix]))
+
+                    dirs_files = []
+                    for item in dirs_list:
+                        length = len(os.listdir(os.path.join(path, item)))
+                        dirs_files.append(length)
+                    files_count = dict(zip(dirs_list, dirs_files))
+                    for key, value in files_count.items():
+                        print(f"Files moved to {key}: {value}")
+
+                    compress = input("Compress directory? (y/n): ")
+                    if compress == 'y':
+                        print(dirs_list)
+                        name = input("Directory name: ")
+                        if name in dirs_list:
+                            archive_name = input("Archive name: ")
+                            archive = os.path.join(path, archive_name)
+                            shutil.make_archive(archive, 'zip', os.path.join(path, name))
+                            print(f"Success! Directory {name} compressed")
+                        else:
+                            print("Directory not found")
+    else:
+        print("Path not found")
 except FileExistsError:
     print("Directory already exists")
 except FileNotFoundError:
