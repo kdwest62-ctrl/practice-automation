@@ -65,4 +65,4 @@ try:
     else:
         print("Path not found")
 except ValueError:
-    print("Input number, not letter")
+    print("Please input a whole number")
