@@ -1,67 +1,61 @@
-import os
 from pathlib import Path
 
 try:
-    source = input("Source path: ")
-    if os.path.exists(source):
-        list1 = []
-        list2 = []
-        list3 = []
-        list4 = []
-        for root, dirs, files in os.walk(source):
-            for item in dirs:
-                if os.path.isfile(item):
-                    a = os.path.join(root, item)
-                    list1.append(a)
-            for item in files:
-                a = os.path.join(root, item)
-                list1.append(a)
-
-        for item in list1:
-            path = Path(item)
-            if path.name in list2:
-                list3.append(path.name)
+    path = Path(input("Path: "))
+    if path.exists():
+        files = []
+        single_names = []
+        duplicate_names = []
+        duplicate_paths = []
+        for item in path.rglob('*'):
+            if item.is_file():
+                files.append(item)
+        for file in files:
+            if file.name in single_names:
+                duplicate_names.append(file.name)
             else:
-                list2.append(path.name)
+                single_names.append(file.name)
 
-        if len(set(list3)) == 0:
-            print("No duplicates")
+        if len(duplicate_names) == 0:
+            print("No duplicate files")
         else:
             index = 0
-            while True:
-                for item in list1:
-                    path = Path(item)
-                    if path.name == list3[index]:
-                        list4.append(item)
+            while index < len(set(duplicate_names)):
+                for file in files:
+                    if file.name == duplicate_names[index]:
+                        duplicate_paths.append(file)
                 index += 1
-                if index >= len(set(list3)):
-                    break
-            keys = []
-            num = 0
-            while num != len(list4):
-                num += 1
-                keys.append(num)
 
-            dict1 = dict(zip(keys, list4))
-            for key, value in dict1.items():
+            nums = []
+            num = 1
+            while num <= len(duplicate_paths):
+                nums.append(num)
+                num += 1
+
+            duplicates_with_nums = dict(zip(nums, duplicate_paths))
+            for key, value in duplicates_with_nums.items():
                 print(key, value)
 
-            remove = input("Remove duplicates? (y/n): ")
+            remove = input("Remove files? (y/n): ")
             if remove == 'y':
-                total = int(input("Number of duplicates to remove: "))
-                if total <= len(list4) and total != 0:
-                    removed = []
+                total = int(input("Number of files to remove: "))
+                if total <= len(duplicate_paths) and total != 0:
+                    files_to_remove = []
                     count = 0
                     while count != total:
-                        x = int(input("Num to be deleted: "))
-                        if x in keys:
-                            removed.append(x)
+                        file_num = int(input("Remove file (input number): "))
+                        if file_num in nums:
+                            files_to_remove.append(file_num)
                             count += 1
                         else:
-                            print("Num not in list")
-                    for item in removed:
-                        os.remove(dict1[item])
-                    print("Success! Duplicates removed")
+                            print("Number not in list")
+                    files_removed = 0
+                    for item in files_to_remove:
+                        duplicates_with_nums[item].unlink()
+                        files_removed += 1
+                    print(f"{files_removed} files removed")
+                else:
+                    print(f"There are only {len(duplicates_with_nums.values())} files")
     else:
         print("Path not found")
 except ValueError:
