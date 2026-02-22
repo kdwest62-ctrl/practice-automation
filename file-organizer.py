@@ -1,28 +1,25 @@
-import os
 import shutil
 from pathlib import Path
 
 try:
-    path = input("Source path: ")
-    if os.path.exists(path):
-
+    path = Path(input("Path: "))
+    if path.exists():
         dirs_list = []
         total_dirs = int(input("Number of directories to create: "))
         if total_dirs != 0:
             dir_count = 1
             while dir_count <= total_dirs:
                 dir_name= input(f"Directory {dir_count} name: ")
-                os.mkdir(os.path.join(path, dir_name))
+                new_dir_path = path / dir_name
+                new_dir_path.mkdir()
                 dirs_list.append(dir_name)
                 dir_count += 1
 
             file_extensions = []
-            items = os.listdir(path)
+            items = path.iterdir()
             for item in items:
-                file_path = os.path.join(path, item)
-                if os.path.isfile(file_path):
-                    x = Path(file_path)
-                    file_extensions.append(x.suffix)
+                if item.is_file():
+                    file_extensions.append(item.suffix)
             print(set(file_extensions))
 
             extensions_list = []
@@ -31,34 +28,40 @@ try:
                 ext_count = 1
                 while ext_count <= total_ext:
                     extension = input(f"File extension {ext_count} name: ")
-                    if extension not in file_extensions:
-                        print("File extension not found. Try again")
-                    else:
+                    if extension in file_extensions:
                         extensions_list.append(extension)
                         ext_count += 1
+                    else:
+                        print("File extension not found. Try again")
 
                 destinations_list = []
                 print(dirs_list)
                 for item in extensions_list:
                     destination = input(f"Directory for {item}: ")
-                    if destination not in dirs_list:
-                        print("Directory not available")
-                    else:
+                    if destination in dirs_list:
                         destinations_list.append(destination)
-                organizer = dict(zip(extensions_list, destinations_list))
+                    else:
+                        print("Directory not found")
+                ext_with_dst = dict(zip(extensions_list, destinations_list))
+                print(ext_with_dst)
 
-                if len(organizer.values()) != 0:
-                    items = os.listdir(path)
+                if len(ext_with_dst.values()) != 0:
+                    items = path.iterdir()
                     for item in items:
-                        file_path = os.path.join(path, item)
-                        if os.path.isfile(file_path):
-                            a = Path(file_path)
-                            if a.suffix in organizer.keys():
-                                shutil.move(file_path, os.path.join(path, organizer[a.suffix]))
+                        if item.is_file():
+                            if item.suffix in extensions_list:
+                                src = str(item)
+                                dst = str(path / ext_with_dst[item.suffix])
+                                shutil.move(src, dst)
 
                     dirs_files = []
+                    c = []
                     for item in dirs_list:
-                        length = len(os.listdir(os.path.join(path, item)))
+                        new_path = path / item
+                        files = new_path.iterdir()
+                        for b in files:
+                            c.append(b)
+                        length = len(c)
                         dirs_files.append(length)
                     files_count = dict(zip(dirs_list, dirs_files))
                     for key, value in files_count.items():
@@ -70,8 +73,9 @@ try:
                         name = input("Directory name: ")
                         if name in dirs_list:
                             archive_name = input("Archive name: ")
-                            archive = os.path.join(path, archive_name)
-                            shutil.make_archive(archive, 'zip', os.path.join(path, name))
+                            archive = path / archive_name
+                            compress_path = path / name
+                            shutil.make_archive(archive, 'zip', compress_path)
                             print(f"Success! Directory {name} compressed")
                         else:
                             print("Directory not found")
@@ -80,6 +84,6 @@ try:
 except FileExistsError:
     print("Directory already exists")
 except FileNotFoundError:
-    print("Path not found")
+    print("File not found")
 except ValueError:
     print("Please input a number")
