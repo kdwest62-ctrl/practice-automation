@@ -22,47 +22,43 @@ try:
                     file_extensions.append(item.suffix)
             print(set(file_extensions))
 
-            extensions_list = []
+            extensions = []
             total_ext = int(input("Number of file extensions to organize: "))
             if total_ext != 0:
                 ext_count = 1
                 while ext_count <= total_ext:
                     extension = input(f"File extension {ext_count} name: ")
                     if extension in file_extensions:
-                        extensions_list.append(extension)
+                        extensions.append(extension)
                         ext_count += 1
                     else:
                         print("File extension not found. Try again")
 
-                destinations_list = []
+                destinations = []
                 print(dirs_list)
-                for item in extensions_list:
+                for item in extensions:
                     destination = input(f"Directory for {item}: ")
                     if destination in dirs_list:
-                        destinations_list.append(destination)
+                        destinations.append(destination)
                     else:
                         print("Directory not found")
-                ext_with_dst = dict(zip(extensions_list, destinations_list))
-                print(ext_with_dst)
+                ext_with_dst = dict(zip(extensions, destinations))
 
                 if len(ext_with_dst.values()) != 0:
                     items = path.iterdir()
                     for item in items:
                         if item.is_file():
-                            if item.suffix in extensions_list:
-                                src = str(item)
-                                dst = str(path / ext_with_dst[item.suffix])
-                                shutil.move(src, dst)
+                            if item.suffix in extensions:
+                                shutil.move(str(item), str(path / ext_with_dst[item.suffix]))
 
                     dirs_files = []
-                    c = []
+                    dirs_path_list = []
                     for item in dirs_list:
-                        new_path = path / item
-                        files = new_path.iterdir()
-                        for b in files:
-                            c.append(b)
-                        length = len(c)
-                        dirs_files.append(length)
+                        dir_path = path / item
+                        for file in dir_path.iterdir():
+                            dirs_path_list.append(file)
+                        count = len(dirs_path_list)
+                        dirs_files.append(count)
                     files_count = dict(zip(dirs_list, dirs_files))
                     for key, value in files_count.items():
                         print(f"Files moved to {key}: {value}")
@@ -73,9 +69,9 @@ try:
                         name = input("Directory name: ")
                         if name in dirs_list:
                             archive_name = input("Archive name: ")
-                            archive = path / archive_name
-                            compress_path = path / name
-                            shutil.make_archive(archive, 'zip', compress_path)
+                            archive_dst = path / archive_name
+                            archive_src = path / name
+                            shutil.make_archive(archive_dst, 'zip', archive_src)
                             print(f"Success! Directory {name} compressed")
                         else:
                             print("Directory not found")
@@ -83,7 +79,5 @@ try:
         print("Path not found")
 except FileExistsError:
     print("Directory already exists")
-except FileNotFoundError:
-    print("File not found")
 except ValueError:
     print("Please input a number")
