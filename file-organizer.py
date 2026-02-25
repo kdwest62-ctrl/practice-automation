@@ -78,6 +78,6 @@ try:
     else:
         print("Path not found")
 except FileExistsError:
-    print("Directory already exists")
+    print("File/directory already exists")
 except ValueError:
     print("Please input a number")
