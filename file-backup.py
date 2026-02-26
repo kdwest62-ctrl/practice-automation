@@ -5,20 +5,20 @@ try:
     src_path = Path(input("Source path: "))
     if src_path.exists():
         file_extensions = []
-        items = src_path.iterdir()
-        for item in items:
+        src_path_items = src_path.iterdir()
+        for item in src_path_items:
             if item.is_file():
                 file_extensions.append(item.suffix)
         print(set(file_extensions))
 
-        extensions_list = []
+        extensions = []
         total_ext = int(input("Number of file extensions to backup: "))
         if total_ext != 0:
             ext_count = 1
             while ext_count <= total_ext:
                 extension = input(f"File extension {ext_count} name: ")
                 if extension in file_extensions:
-                    extensions_list.append(extension)
+                    extensions.append(extension)
                     ext_count += 1
                 else:
                     print("File extension not found. Try again")
@@ -36,34 +36,31 @@ try:
                     dirs_list.append(dir_name)
                     dir_count += 1
 
-                destinations_list = []
+                destinations = []
                 print(dirs_list)
-                for item in extensions_list:
+                for item in extensions:
                     destination = input(f"Directory for {item}: ")
                     if destination in dirs_list:
-                        destinations_list.append(destination)
+                        destinations.append(destination)
                     else:
                         print("Directory not available")
-                organizer = dict(zip(extensions_list, destinations_list))
+                ext_with_dst = dict(zip(extensions, destinations))
 
-                if len(organizer.values()) != 0:
-                    items = src_path.iterdir()
-                    for item in items:
+                if len(ext_with_dst.values()) != 0:
+                    src_path_items = src_path.iterdir()
+                    for item in src_path_items:
                         if item.is_file():
-                            if item.suffix in organizer.keys():
-                                a = str(item)
-                                b = str(dst_path / organizer[item.suffix])
-                                shutil.copy2(a, b)
+                            if item.suffix in ext_with_dst.keys():
+                                shutil.copy2(str(item), str(dst_path / ext_with_dst[item.suffix]))
 
                     dirs_files = []
-                    c = []
+                    dirs_path_list = []
                     for item in dirs_list:
-                        new_path = dst_path / item
-                        files = new_path.iterdir()
-                        for y in files:
-                            c.append(y)
-                        length = len(c)
-                        dirs_files.append(length)
+                        dir_path = dst_path / item
+                        for file in dir_path.iterdir():
+                            dirs_path_list.append(file)
+                        count = len(dirs_path_list)
+                        dirs_files.append(count)
                     files_count = dict(zip(dirs_list, dirs_files))
                     for key, value in files_count.items():
                         print(f"Files copied to {key}: {value}")
@@ -74,9 +71,9 @@ try:
                         name = input("Directory name: ")
                         if name in dirs_list:
                             archive_name = input("Archive name: ")
-                            archive = dst_path / archive_name
-                            compress_path = dst_path / name
-                            shutil.make_archive(archive, 'zip', compress_path)
+                            archive_dst = dst_path / archive_name
+                            archive_src = dst_path / name
+                            shutil.make_archive(archive_dst, 'zip', archive_src)
                             print(f"Success! Directory {name} compressed")
                         else:
                             print("Directory not found")
