@@ -6,7 +6,7 @@ try:
     if path.exists():
         dirs_list = []
         total_dirs = int(input("Number of directories to create: "))
-        if total_dirs != 0:
+        if total_dirs > 0:
             dir_count = 1
             while dir_count <= total_dirs:
                 dir_name= input(f"Directory {dir_count} name: ")
@@ -24,7 +24,7 @@ try:
 
             extensions = []
             total_ext = int(input("Number of file extensions to organize: "))
-            if total_ext != 0:
+            if total_ext > 0:
                 ext_count = 1
                 while ext_count <= total_ext:
                     extension = input(f"File extension {ext_count} name: ")
