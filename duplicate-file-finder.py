@@ -42,11 +42,11 @@ try:
                 file_sizes = []
                 for item in duplicate_paths:
                     size = os.path.getsize(str(item))
-                    file_sizes.append(size)
+                    file_sizes.append(size / 1000)
                 dict1 = dict(zip(nums, file_sizes))
 
                 for key, value in dict1.items():
-                    print(f"{key} ({value} bytes)")
+                    print(f"{key} ({value} KB)")
 
             remove = input("Remove files? (y/n): ")
             if remove == 'y':
