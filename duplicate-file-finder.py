@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 try:
     path = Path(input("Path: "))
@@ -35,6 +36,17 @@ try:
             duplicates_with_nums = dict(zip(nums, duplicate_paths))
             for key, value in duplicates_with_nums.items():
                 print(key, value)
+
+            show_size = input("Show file sizes? (y/n): ")
+            if show_size == 'y':
+                file_sizes = []
+                for item in duplicate_paths:
+                    size = os.path.getsize(str(item))
+                    file_sizes.append(size)
+                dict1 = dict(zip(nums, file_sizes))
+
+                for key, value in dict1.items():
+                    print(f"{key} ({value} bytes)")
 
             remove = input("Remove files? (y/n): ")
             if remove == 'y':
