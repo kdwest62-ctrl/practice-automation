@@ -51,7 +51,7 @@ try:
             remove = input("Remove files? (y/n): ")
             if remove == 'y':
                 total = int(input("Number of files to remove: "))
-                if total <= len(duplicate_paths) and total != 0:
+                if 0 < total <= len(duplicate_paths):
                     files_to_remove = []
                     count = 0
                     while count != total:
@@ -66,8 +66,6 @@ try:
                         duplicates_with_nums[item].unlink()
                         files_removed += 1
                     print(f"{files_removed} files removed")
-                else:
-                    print(f"There are only {len(duplicates_with_nums.values())} files")
     else:
         print("Path not found")
 except ValueError:
