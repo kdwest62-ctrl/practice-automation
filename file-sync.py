@@ -1,10 +1,10 @@
 import os
 import shutil
 
-dir1_path = input("Directory path 1: ")
+dir1_path = input("Original directory path: ")
 if os.path.exists(dir1_path):
     dir1 = os.listdir(dir1_path)
-    dir2_path = input("Directory path 2: ")
+    dir2_path = input("Sync directory path: ")
     if os.path.exists(dir2_path):
         dir2 = os.listdir(dir2_path)
         if dir1 == dir2:
