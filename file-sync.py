@@ -17,12 +17,12 @@ if os.path.exists(dir1_path):
                 for file in dir1:
                     if file not in dir2:
                         files_to_sync.append(file)
-                synced = 0
+                added = 0
                 for file in files_to_sync:
                     src = os.path.join(dir1_path, file)
                     shutil.copy2(src, dir2_path)
-                    synced += 1
-                print(f"Files synced: {synced}")
+                    added += 1
+                print(f"Files added to sync directory: {added}")
     else:
         print("Path not found")
 else:
