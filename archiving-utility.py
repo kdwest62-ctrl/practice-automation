@@ -1,23 +1,19 @@
-import os
 import shutil
+from pathlib import Path
 
-path = input("Path: ")
-if os.path.exists(path):
-    items = os.listdir(path)
-    files = []
+path = Path(input("Path: "))
+if path.exists():
+    items = path.iterdir()
+
     for item in items:
-        file = os.path.join(path, item)
-        files.append(file)
+        if item.is_dir():
+            print(item.name)
 
-    for file in files:
-        if os.path.isdir(file):
-            print(file)
-
-    dir_to_archive = input("Dir to archive: ")
+    dir_to_archive = input("Directory to archive: ")
     archive_name = input("Archive name: ")
-    dst_path = input("Destination path: ")
-    src = os.path.join(path, dir_to_archive)
-    dst = os.path.join(dst_path, archive_name)
+    dst_path = Path(input("Destination path: "))
+    src = path / dir_to_archive
+    dst = dst_path / archive_name
     shutil.make_archive(dst, 'zip', src)
     print(f"{dir_to_archive} archived as {archive_name}")
 
