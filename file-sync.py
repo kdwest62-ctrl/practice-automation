@@ -1,29 +1,48 @@
 import os
 import shutil
 
-dir1_path = input("Original directory path: ")
+dir1_path = input("Directory 1 path: ")
 if os.path.exists(dir1_path):
-    dir1 = os.listdir(dir1_path)
-    dir2_path = input("Sync directory path: ")
-    if os.path.exists(dir2_path):
-        dir2 = os.listdir(dir2_path)
-        if dir1 == dir2:
-            print("Files synced")
-        else:
-            print("Files not synced")
-            sync = input("Sync? (y/n): ")
-            if sync == 'y':
-                files_to_sync = []
-                for file in dir1:
-                    if file not in dir2:
-                        files_to_sync.append(file)
-                added = 0
-                for file in files_to_sync:
-                    src = os.path.join(dir1_path, file)
-                    shutil.copy2(src, dir2_path)
-                    added += 1
-                print(f"Files added to sync directory: {added}")
-    else:
-        print("Path not found")
+
+    def get_files(dir_path):
+        files = []
+        items = os.listdir(dir_path)
+        for a in items:
+            file_path = os.path.join(dir_path, a)
+            files.append(file_path)
+        return tuple(files)
+
+    def sync(dir1, dir_path, dir_files):
+        for b in dir1:
+            if b not in dir_files:
+                shutil.copy2(b, dir_path)
+
+    dir1_files = get_files(dir1_path)
+
+    paths = []
+    total = int(input("Number of directories to sync with original directory: "))
+    if total > 0:
+        count = 0
+        while count < total:
+            path = input(f"Directory path: ")
+            if os.path.exists(path):
+                paths.append(path)
+                count += 1
+            else:
+                print("Path not found")
+
+        paths_files = []
+        for item in paths:
+            path_files = get_files(item)
+            paths_files.append(path_files)
+
+        dict1 = dict(zip(paths, paths_files))
+
+        for key, value in dict1.items():
+            if value != dir1_files:
+                sync(dir1_files, key, value)
+
+        print("Success! Directories synced")
+
 else:
     print("Path not found")
