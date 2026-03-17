@@ -1,5 +1,6 @@
 import os
 import shutil
+import pandas as pd
 
 path = input("Directory path: ")
 if os.path.exists(path):
@@ -12,10 +13,10 @@ if os.path.exists(path):
 
     usage = shutil.disk_usage(path)
     total = converter(usage.total)
-    free = converter(usage.free)
     used = converter(usage.used)
-    percent_free = percentage(free, total)
+    free = converter(usage.free)
     percent_used = percentage(used, total)
+    percent_free = percentage(free, total)
 
     items = os.listdir(path)
     files = []
@@ -26,14 +27,12 @@ if os.path.exists(path):
         size = os.path.getsize(file)
         sizes.append(converter(size))
     dir_size = sum(sizes)
-    percent_dir = percentage(dir_size, used)
+    percent_dir = percentage(dir_size, total)
 
-    print(f"Total space: {total} GB")
-    print(f"Used space: {used} GB")
-    print(f"Used space %: {percent_used}")
-    print(f"% used by directory: {percent_dir}")
-    print(f"Free space: {free} GB")
-    print(f"Free space %: {percent_free}")
-
+    print(f"Total space: {total} gb")
+    data = {'Data (gb)': [used, dir_size, free],
+            '% used in total space': [percent_used, percent_dir, percent_free]}
+    df = pd.DataFrame(data, index=['Used space', 'Directory size', 'Free space'])
+    print(df)
 else:
     print("Path not found")
