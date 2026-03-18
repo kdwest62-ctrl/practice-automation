@@ -7,6 +7,13 @@ if os.path.exists(path):
         result = num / (1024 ** 2)
         return round(result, 2)
 
+    small_min = int(input("Small min (mb): "))
+    small_max = int(input("Small max (mb): "))
+    medium_min = int(input("Medium min (mb): "))
+    medium_max = int(input("Medium max (mb): "))
+    large_min = int(input("Large min (mb): "))
+    large_max = int(input("Large max (mb): "))
+
     small = os.path.join(path, 'Small')
     medium = os.path.join(path, 'Medium')
     large = os.path.join(path, 'Large')
@@ -28,11 +35,11 @@ if os.path.exists(path):
 
     dict1 = dict(zip(files, sizes))
     for item in dict1.keys():
-        if 0 < dict1[item] <= 2:
+        if small_min < dict1[item] <= small_max:
             shutil.move(item, small)
-        elif 2 < dict1[item] <= 10:
+        elif medium_min < dict1[item] <= medium_max:
             shutil.move(item, medium)
-        else:
+        elif large_min < dict1[item] <= large_max:
             shutil.move(item, large)
     print("Files organized successfully")
 else:
