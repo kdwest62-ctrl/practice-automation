@@ -1,10 +1,10 @@
-import os
 import shutil
 import pandas as pd
+from pathlib import Path
 
 try:
-    path = input("Directory path: ")
-    if os.path.exists(path):
+    path = Path(input("Directory path: "))
+    if path.exists():
         def convert(num, unit_choice):
             if unit_choice == 'kb':
                 result = num / 1024
@@ -19,8 +19,13 @@ try:
             result = (part / whole) * 100
             return round(result, 2)
 
-        items = os.listdir(path)
-        if len(items) > 0:
+        items = path.iterdir()
+        files = []
+        for item in items:
+            if item.is_file():
+                files.append(item)
+
+        if len(files) > 0:
             unit = input("Select unit (kb, mb, gb): ")
             usage = shutil.disk_usage(path)
             total = convert(usage.total, unit)
@@ -29,20 +34,15 @@ try:
             percent_used = percent(used, total)
             percent_free = percent(free, total)
 
-            files = []
-            for item in items:
-                file = os.path.join(path, item)
-                if os.path.isfile(file):
-                    files.append(file)
             sizes = []
-            for item in files:
-                size = os.path.getsize(item)
+            for file in files:
+                size = file.stat().st_size
                 sizes.append(convert(size, unit))
             dir_size = sum(sizes)
             percent_dir = percent(dir_size, total)
 
             print(f"Total space: {total} {unit}")
-            data = {f'Data {unit}': [used, dir_size, free],
+            data = {f'Data ({unit})': [used, dir_size, free],
                     '% used in total space': [percent_used, percent_dir, percent_free]}
             df = pd.DataFrame(data, index=['Used space', 'Directory size', 'Free space'])
             print(df)
