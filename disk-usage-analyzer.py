@@ -19,9 +19,8 @@ try:
             result = (part / whole) * 100
             return round(result, 2)
 
-        items = path.iterdir()
         files = []
-        for item in items:
+        for item in path.rglob('*'):
             if item.is_file():
                 files.append(item)
 
