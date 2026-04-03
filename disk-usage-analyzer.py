@@ -33,6 +33,13 @@ try:
             percent_used = percent(used, total)
             percent_free = percent(free, total)
 
+            file_names = []
+            locations = []
+            for file in files:
+                x = Path(file)
+                file_names.append(x.name)
+                locations.append(x.parent)
+
             sizes = []
             for file in files:
                 size = file.stat().st_size
@@ -40,11 +47,23 @@ try:
             dir_size = sum(sizes)
             percent_dir = percent(dir_size, total)
 
+            percentages = []
+            for size in sizes:
+                percentage = percent(size, dir_size)
+                percentages.append(percentage)
+
             print(f"Total space: {total} {unit}")
-            data = {f'Data ({unit})': [used, dir_size, free],
-                    '% used in total space': [percent_used, percent_dir, percent_free]}
-            df = pd.DataFrame(data, index=['Used space', 'Directory size', 'Free space'])
+            print(f"Free space: {free} {unit} ({percent_free} %)")
+            data = {f'Data ({unit})': [used, dir_size],
+                    'Space used in total space(%)': [percent_used, percent_dir]}
+            df = pd.DataFrame(data, index=['Used space', 'Directory size'])
             print(df)
+            print('-' * 8)
+            data = {'Location': [item for item in locations],
+                     f'Data ({unit})': [item for item in sizes],
+                     'Space used in directory (%)': [item for item in percentages]}
+            df = pd.DataFrame(data, index=[item for item in file_names])
+            print(df.to_string())
         else:
             print("No items in path")
     else:
