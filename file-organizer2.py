@@ -8,12 +8,12 @@ try:
             result = num / (1024 ** 2)
             return round(result, 2)
 
-        small_min = int(input("Small min (mb): "))
-        small_max = int(input("Small max (mb): "))
-        medium_min = int(input("Medium min (mb): "))
-        medium_max = int(input("Medium max (mb): "))
-        large_min = int(input("Large min (mb): "))
-        large_max = int(input("Large max (mb): "))
+        small_min = float(input("Small min (mb): "))
+        small_max = float(input("Small max (mb): "))
+        medium_min = float(input("Medium min (mb): "))
+        medium_max = float(input("Medium max (mb): "))
+        large_min = float(input("Large min (mb): "))
+        large_max = float(input("Large max (mb): "))
 
         small = os.path.join(path, 'Small')
         medium = os.path.join(path, 'Medium')
