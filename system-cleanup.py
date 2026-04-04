@@ -15,11 +15,11 @@ if path.exists():
     file_names = []
     locations = []
     sizes = []
-    criteria = 10
+    criterion = 10
     for file in files:
         size = file.stat().st_size
         converted = round((size / 1024**2), 2)
-        if converted >= criteria:
+        if converted >= criterion:
             sizes.append(converted)
             files_to_remove.append(file)
 
@@ -28,7 +28,7 @@ if path.exists():
         file_names.append(file_path.name)
         locations.append(file_path.parent)
 
-    dir_to_remove = []
+    dirs_to_remove = []
     dir_loc = []
     dir_names = []
     for item in dirs:
@@ -36,22 +36,34 @@ if path.exists():
         for element in item.iterdir():
             count.append(element)
         if len(count) == 0:
-            dir_to_remove.append(item)
+            dirs_to_remove.append(item)
 
-    for item in dir_to_remove:
+    for item in dirs_to_remove:
         dir_path = Path(item)
         dir_names.append(dir_path.name)
         dir_loc.append(dir_path.parent)
 
-    print(f"Files (>= {criteria} mb)")
-    data = {'Location': [item for item in locations], 'Size (mb)': [item for item in sizes]}
-    df = pd.DataFrame(data, index=[item for item in file_names])
-    print(df.to_string())
-    print('-' * 8)
-    print("Empty directories")
-    data = {'Location': [item for item in dir_loc]}
-    df = pd.DataFrame(data, index=[item for item in dir_names])
-    print(df.to_string())
-
+    if len(files_to_remove) == 0 and len(dirs_to_remove) == 0:
+        print("No files and directories match the criteria")
+    elif len(files_to_remove) > 0 and len(dirs_to_remove) == 0:
+        print(f"Files (>= {criterion} mb)")
+        data = {'Location': [item for item in locations], 'Size (mb)': [item for item in sizes]}
+        df = pd.DataFrame(data, index=[item for item in file_names])
+        print(df.to_string())
+    elif len(files_to_remove) == 0 and len(dirs_to_remove) > 0:
+        print("Empty directories")
+        data = {'Location': [item for item in dir_loc]}
+        df = pd.DataFrame(data, index=[item for item in dir_names])
+        print(df.to_string())
+    else:
+        print(f"Files (>= {criterion} mb)")
+        data = {'Location': [item for item in locations], 'Size (mb)': [item for item in sizes]}
+        df = pd.DataFrame(data, index=[item for item in file_names])
+        print(df.to_string())
+        print('-' * 8)
+        print("Empty directories")
+        data = {'Location': [item for item in dir_loc]}
+        df = pd.DataFrame(data, index=[item for item in dir_names])
+        print(df.to_string())
 else:
     print("Path not found")
