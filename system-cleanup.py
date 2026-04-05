@@ -3,6 +3,17 @@ import pandas as pd
 
 path = Path(input("Path: "))
 if path.exists():
+    def convert(num, unit_choice):
+        if unit_choice == 'kb':
+            result = num / 1024
+            return round(result, 2)
+        elif unit_choice == 'mb':
+            result = num / (1024 ** 2)
+            return round(result, 2)
+        elif unit_choice == 'gb':
+            result = num / (1024 ** 3)
+            return round(result, 2)
+
     files = []
     dirs = []
     for item in path.rglob('*'):
@@ -15,10 +26,11 @@ if path.exists():
     file_names = []
     locations = []
     sizes = []
-    file_size = float(input("File size (mb): "))
+    unit = input("Select unit (kb, mb, gb): ")
+    file_size = float(input(f"File size ({unit}): "))
     for file in files:
         size = file.stat().st_size
-        converted = round((size / 1024**2), 2)
+        converted = convert(size, unit)
         if converted >= file_size:
             sizes.append(converted)
             files_to_remove.append(file)
@@ -46,8 +58,8 @@ if path.exists():
     if len(files_to_remove) == 0 and len(dirs_to_remove) == 0:
         print("No files and directories match the criteria")
     elif len(files_to_remove) > 0 and len(dirs_to_remove) == 0:
-        print(f"Files (>= {file_size} mb)")
-        data = {'Location': [item for item in locations], 'Size (mb)': [item for item in sizes]}
+        print(f"Files (>= {file_size} {unit})")
+        data = {'Location': [item for item in locations], f'Size ({unit})': [item for item in sizes]}
         df = pd.DataFrame(data, index=[item for item in file_names])
         print(df.to_string())
     elif len(files_to_remove) == 0 and len(dirs_to_remove) > 0:
@@ -56,8 +68,8 @@ if path.exists():
         df = pd.DataFrame(data, index=[item for item in dir_names])
         print(df.to_string())
     else:
-        print(f"Files (>= {file_size} mb)")
-        data = {'Location': [item for item in locations], 'Size (mb)': [item for item in sizes]}
+        print(f"Files (>= {file_size} {unit})")
+        data = {'Location': [item for item in locations], f'Size ({unit})': [item for item in sizes]}
         df = pd.DataFrame(data, index=[item for item in file_names])
         print(df.to_string())
         print('-' * 8)
