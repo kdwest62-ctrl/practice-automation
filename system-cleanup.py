@@ -15,11 +15,11 @@ if path.exists():
     file_names = []
     locations = []
     sizes = []
-    criterion = 10
+    file_size = float(input("File size (mb): "))
     for file in files:
         size = file.stat().st_size
         converted = round((size / 1024**2), 2)
-        if converted >= criterion:
+        if converted >= file_size:
             sizes.append(converted)
             files_to_remove.append(file)
 
@@ -46,7 +46,7 @@ if path.exists():
     if len(files_to_remove) == 0 and len(dirs_to_remove) == 0:
         print("No files and directories match the criteria")
     elif len(files_to_remove) > 0 and len(dirs_to_remove) == 0:
-        print(f"Files (>= {criterion} mb)")
+        print(f"Files (>= {file_size} mb)")
         data = {'Location': [item for item in locations], 'Size (mb)': [item for item in sizes]}
         df = pd.DataFrame(data, index=[item for item in file_names])
         print(df.to_string())
@@ -56,7 +56,7 @@ if path.exists():
         df = pd.DataFrame(data, index=[item for item in dir_names])
         print(df.to_string())
     else:
-        print(f"Files (>= {criterion} mb)")
+        print(f"Files (>= {file_size} mb)")
         data = {'Location': [item for item in locations], 'Size (mb)': [item for item in sizes]}
         df = pd.DataFrame(data, index=[item for item in file_names])
         print(df.to_string())
