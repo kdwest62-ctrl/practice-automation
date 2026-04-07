@@ -23,7 +23,7 @@ try:
             elif item.is_dir():
                 dirs.append(item)
 
-        files_to_remove = []
+        files_match = []
         file_names = []
         locations = []
         sizes = []
@@ -34,14 +34,16 @@ try:
             converted = convert(size, unit)
             if converted >= file_size:
                 sizes.append(converted)
-                files_to_remove.append(file)
-
-        for file in files_to_remove:
+                files_match.append(file)
+        for file in files_match:
             file_path = Path(file)
             file_names.append(file_path.name)
             locations.append(file_path.parent)
 
-        dirs_to_remove = []
+        num_files = [item for item in range(len(files_match))]
+        my_dict1 = dict(zip(num_files, files_match))
+
+        dirs_match = []
         dir_loc = []
         dir_names = []
         for item in dirs:
@@ -49,33 +51,41 @@ try:
             for element in item.iterdir():
                 count.append(element)
             if len(count) == 0:
-                dirs_to_remove.append(item)
-
-        for item in dirs_to_remove:
+                dirs_match.append(item)
+        for item in dirs_match:
             dir_path = Path(item)
             dir_names.append(dir_path.name)
             dir_loc.append(dir_path.parent)
 
-        if len(files_to_remove) == 0 and len(dirs_to_remove) == 0:
+        num_dirs = [item for item in range(len(dirs_match))]
+        my_dict2 = dict(zip(num_dirs, dirs_match))
+
+        if len(files_match) == 0 and len(dirs_match) == 0:
             print("No files and directories match the criteria")
-        elif len(files_to_remove) > 0 and len(dirs_to_remove) == 0:
+        elif len(files_match) > 0 and len(dirs_match) == 0:
             print(f"Files (>= {file_size} {unit})")
-            data = {'Location': [item for item in locations], f'Size ({unit})': [item for item in sizes]}
+            data = {'Number': [item for item in range(len(files_match))],
+                    'Location': [item for item in locations],
+                    f'Size ({unit})': [item for item in sizes]}
             df = pd.DataFrame(data, index=[item for item in file_names])
             print(df.to_string())
-        elif len(files_to_remove) == 0 and len(dirs_to_remove) > 0:
+        elif len(files_match) == 0 and len(dirs_match) > 0:
             print("Empty directories")
-            data = {'Location': [item for item in dir_loc]}
+            data = {'Number': [item for item in range(len(dirs_match))],
+                    'Location': [item for item in dir_loc]}
             df = pd.DataFrame(data, index=[item for item in dir_names])
             print(df.to_string())
         else:
             print(f"Files (>= {file_size} {unit})")
-            data = {'Location': [item for item in locations], f'Size ({unit})': [item for item in sizes]}
+            data = {'Number': [item for item in range(len(files_match))],
+                    'Location': [item for item in locations],
+                    f'Size ({unit})': [item for item in sizes]}
             df = pd.DataFrame(data, index=[item for item in file_names])
             print(df.to_string())
             print('-' * 8)
             print("Empty directories")
-            data = {'Location': [item for item in dir_loc]}
+            data = {'Number': [item for item in range(len(dirs_match))],
+                    'Location': [item for item in dir_loc]}
             df = pd.DataFrame(data, index=[item for item in dir_names])
             print(df.to_string())
     else:
