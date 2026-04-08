@@ -88,13 +88,13 @@ try:
                             remove = int(input("File number: "))
                             remove_items.append(remove)
                             count += 1
-
                         confirm = input("Confirm to remove selected files (y/n): ")
                         if confirm == 'y':
                             for key, value in my_dict1.items():
                                 if key in remove_items:
                                     f = Path(value)
                                     f.unlink()
+                            print("Files removed successfully")
         elif len(files_match) == 0 and len(dirs_match) > 0:
             print(f"No files >= {file_size} {unit}")
             print('-' * 8)
