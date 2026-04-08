@@ -61,7 +61,7 @@ try:
         my_dict2 = dict(zip(num_dirs, dirs_match))
 
         if len(files_match) == 0 and len(dirs_match) == 0:
-            print("No files and directories match the criteria")
+            print("No files and directories matched the criteria")
         elif len(files_match) > 0 and len(dirs_match) == 0:
             print(f"Files (>= {file_size} {unit})")
             data = {'Number': [item for item in range(len(files_match))],
@@ -69,7 +69,35 @@ try:
                     f'Size ({unit})': [item for item in sizes]}
             df = pd.DataFrame(data, index=[item for item in file_names])
             print(df.to_string())
+            print('-' * 8)
+            print("No empty directories")
+            print('-' * 8)
+            remove_files = input("Remove files? (y/n): ")
+            if remove_files == 'y':
+                choice = input("Remove all or selection? (a/s): ")
+                if choice == 'a':
+                    for value in my_dict1.values():
+                        f = Path(value)
+                        f.unlink()
+                elif choice == 's':
+                    remove_items = []
+                    total = int(input("How many to remove: "))
+                    if total <= len(files_match):
+                        count = 0
+                        while count < total:
+                            remove = int(input("File number: "))
+                            remove_items.append(remove)
+                            count += 1
+
+                        confirm = input("Confirm to remove selected files (y/n): ")
+                        if confirm == 'y':
+                            for key, value in my_dict1.items():
+                                if key in remove_items:
+                                    f = Path(value)
+                                    f.unlink()
         elif len(files_match) == 0 and len(dirs_match) > 0:
+            print(f"No files >= {file_size} {unit}")
+            print('-' * 8)
             print("Empty directories")
             data = {'Number': [item for item in range(len(dirs_match))],
                     'Location': [item for item in dir_loc]}
