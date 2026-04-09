@@ -103,6 +103,29 @@ try:
                     'Location': [item for item in dir_loc]}
             df = pd.DataFrame(data, index=[item for item in dir_names])
             print(df.to_string())
+            print('-' * 8)
+            remove_dirs = input("Remove empty directories? (y/n): ")
+            if remove_dirs == 'y':
+                choice = input("Remove all or selection? (a/s): ")
+                if choice == 'a':
+                    for value in my_dict2.values():
+                        d = Path(value)
+                        d.rmdir()
+                elif choice == 's':
+                    remove_items = []
+                    total = int(input("How many to remove: "))
+                    if total <= len(dirs_match):
+                        count = 0
+                        while count < total:
+                            remove = int(input("Directory number: "))
+                            remove_items.append(remove)
+                            count += 1
+                        confirm = input("Confirm to remove selected directories (y/n): ")
+                        if confirm == 'y':
+                            for key, value in my_dict2.items():
+                                if key in remove_items:
+                                    d = Path(value)
+                                    d.rmdir()
         else:
             print(f"Files (>= {file_size} {unit})")
             data = {'Number': [item for item in range(len(files_match))],
