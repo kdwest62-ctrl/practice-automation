@@ -79,6 +79,7 @@ try:
                     for value in my_dict1.values():
                         f = Path(value)
                         f.unlink()
+                    print("Files removed successfully")
                 elif choice == 's':
                     remove_items = []
                     total = int(input("How many to remove: "))
@@ -111,6 +112,7 @@ try:
                     for value in my_dict2.values():
                         d = Path(value)
                         d.rmdir()
+                    print("Empty directories removed successfully")
                 elif choice == 's':
                     remove_items = []
                     total = int(input("How many to remove: "))
@@ -126,6 +128,7 @@ try:
                                 if key in remove_items:
                                     d = Path(value)
                                     d.rmdir()
+                            print("Empty directories removed successfully")
         else:
             print(f"Files (>= {file_size} {unit})")
             data = {'Number': [item for item in range(len(files_match))],
