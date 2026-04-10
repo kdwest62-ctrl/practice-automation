@@ -142,6 +142,55 @@ try:
                     'Location': [item for item in dir_loc]}
             df = pd.DataFrame(data, index=[item for item in dir_names])
             print(df.to_string())
+            print('-' * 8)
+            remove_files = input("Remove files? (y/n): ")
+            if remove_files == 'y':
+                choice = input("Remove all or selection? (a/s): ")
+                if choice == 'a':
+                    for value in my_dict1.values():
+                        f = Path(value)
+                        f.unlink()
+                    print("Files removed successfully")
+                elif choice == 's':
+                    remove_items = []
+                    total = int(input("How many to remove: "))
+                    if total <= len(files_match):
+                        count = 0
+                        while count < total:
+                            remove = int(input("File number: "))
+                            remove_items.append(remove)
+                            count += 1
+                        confirm = input("Confirm to remove selected files (y/n): ")
+                        if confirm == 'y':
+                            for key, value in my_dict1.items():
+                                if key in remove_items:
+                                    f = Path(value)
+                                    f.unlink()
+                            print("Files removed successfully")
+            remove_dirs = input("Remove empty directories? (y/n): ")
+            if remove_dirs == 'y':
+                choice = input("Remove all or selection? (a/s): ")
+                if choice == 'a':
+                    for value in my_dict2.values():
+                        d = Path(value)
+                        d.rmdir()
+                    print("Empty directories removed successfully")
+                elif choice == 's':
+                    remove_items = []
+                    total = int(input("How many to remove: "))
+                    if total <= len(dirs_match):
+                        count = 0
+                        while count < total:
+                            remove = int(input("Directory number: "))
+                            remove_items.append(remove)
+                            count += 1
+                        confirm = input("Confirm to remove selected directories (y/n): ")
+                        if confirm == 'y':
+                            for key, value in my_dict2.items():
+                                if key in remove_items:
+                                    d = Path(value)
+                                    d.rmdir()
+                            print("Empty directories removed successfully")
     else:
         print("Path not found")
 except TypeError:
