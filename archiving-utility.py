@@ -3,42 +3,46 @@ from pathlib import Path
 
 path = Path(input("Path: "))
 if path.exists():
-    dirs = []
+    dir_paths = []
+    dir_names = []
     for item in path.iterdir():
         if item.is_dir():
-            dirs.append(item)
+            dir_paths.append(item)
+            dir_names.append(Path(item).name)
 
-    if len(dirs) > 0:
-        for item in dirs:
-            print(item.name)
+    if len(dir_paths) > 0:
+        numbers = [item for item in range(len(dir_paths))]
+        options = dict(zip(numbers, dir_names))
+        for num, dir_name in options.items():
+            print(num, dir_name)
 
-        dirs_to_archive = []
         total = int(input("Number of directories to archive: "))
         if total > 0:
-            count = 1
-            while count <= total:
-                dir_to_archive = input(f"Directory {count} to archive: ")
-                a = path / dir_to_archive
-                if a in dirs:
-                    dirs_to_archive.append(a)
+            dir_nums = []
+            count = 0
+            while count < total:
+                dir_num = int(input("Directory to archive (number): "))
+                if dir_num in options.keys():
+                    dir_nums.append(dir_num)
                     count += 1
                 else:
                     print("Directory not found")
 
             archive_names = []
-            for item in dirs_to_archive:
-                archive_name = input(f"Archive name for {item}: ")
+            for item in dir_nums:
+                archive_name = input(f"Archive name for {options[item]}: ")
                 archive_names.append(archive_name)
 
-            my_dict = dict(zip(dirs_to_archive, archive_names))
+            to_archive = dict(zip(dir_nums, archive_names))
+            reference = dict(zip(numbers, dir_paths))
 
             dst_path = Path(input("Destination path: "))
             if dst_path.exists():
-                for key, value in my_dict.items():
-                    src = path / key
-                    dst = dst_path / value
+                for num, name in to_archive.items():
+                    src = str(reference[num])
+                    dst = dst_path / name
                     shutil.make_archive(dst, 'zip', src)
-                    print(f"{key} archived as {value}")
+                    print(f"{options[num]} archived as {name}")
             else:
                 print("Destination path not found")
     else:
