@@ -5,8 +5,7 @@ try:
     path = input("Directory path: ")
     if os.path.exists(path):
         def convert(num):
-            result = num / (1024 ** 2)
-            return round(result, 2)
+            return num / (1024 ** 2)
 
         items = os.listdir(path)
         if len(items) > 0:
