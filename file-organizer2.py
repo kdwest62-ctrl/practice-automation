@@ -38,3 +38,5 @@ try:
         print("Path not found")
 except FileExistsError:
     print("Directory already exists")
+except ValueError:
+    print("Invalid input")
