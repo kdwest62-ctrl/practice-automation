@@ -27,11 +27,14 @@ try:
                     os.mkdir(dir_path)
                     min_size = float(input("Min file size (mb): "))
                     max_size = float(input("Max file size (mb): "))
-                    for size, file in files_with_sizes.items():
-                        if min_size <= size <= max_size:
-                            shutil.move(file, dir_path)
-                            print(f"{file} moved to {name}")
-                    count += 1
+                    if max_size > min_size:
+                        for size, file in files_with_sizes.items():
+                            if min_size <= size <= max_size:
+                                shutil.move(file, dir_path)
+                                print(f"{file} moved to {name}")
+                        count += 1
+                    else:
+                        print("Minimum cannot be greater than maximum")
         else:
             print("No files in path")
     else:
