@@ -34,16 +34,19 @@ try:
                     name = input(f"Directory {count} name: ")
                     min_size = float(input("Min file size (mb): "))
                     max_size = float(input("Max file size (mb): "))
-                    if max_size > min_size:
-                        dir_path = os.path.join(path, name)
-                        os.mkdir(dir_path)
-                        for size, file in files_with_sizes.items():
-                            if min_size <= size <= max_size:
-                                shutil.move(file, dir_path)
-                                print(f"{file} moved to {name}")
-                        count += 1
+                    if min_size > 0 and max_size > 0:
+                        if max_size > min_size:
+                            dir_path = os.path.join(path, name)
+                            os.mkdir(dir_path)
+                            for size, file in files_with_sizes.items():
+                                if min_size <= size <= max_size:
+                                    shutil.move(file, dir_path)
+                                    print(f"{file} moved to {name}")
+                            count += 1
+                        else:
+                            print("Max is always greater than min")
                     else:
-                        print("Min cannot be greater than max")
+                        print("File size cannot be 0 or lower")
         else:
             print("No files in path")
     else:
