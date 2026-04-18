@@ -1,5 +1,6 @@
 import os
 import shutil
+from pathlib import Path
 
 try:
     path = input("Directory path: ")
@@ -42,7 +43,7 @@ try:
                                 for size, file in files_with_sizes.items():
                                     if min_size <= size <= max_size:
                                         shutil.move(file, dir_path)
-                                        print(f"{file} moved to {name}")
+                                        print(f"{Path(file).name} moved to {name}")
                                 count += 1
                             else:
                                 print("Max is always greater than min")
