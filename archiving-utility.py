@@ -32,7 +32,10 @@ try:
                 archive_names = []
                 for item in dir_nums:
                     archive_name = input(f"Archive name for {dirs[item]}: ")
-                    archive_names.append(archive_name)
+                    if archive_name not in archive_names:
+                        archive_names.append(archive_name)
+                    else:
+                        print(f"{archive_name} already taken")
 
                 to_archive = dict(zip(dir_nums, archive_names))
                 reference = dict(zip(numbers, dir_paths))
