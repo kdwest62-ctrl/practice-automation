@@ -12,8 +12,8 @@ if path.exists():
 
     if len(dir_paths) > 0:
         numbers = [item for item in range(len(dir_paths))]
-        options = dict(zip(numbers, dir_names))
-        for num, dir_name in options.items():
+        dirs = dict(zip(numbers, dir_names))
+        for num, dir_name in dirs.items():
             print(num, dir_name)
 
         total = int(input("Number of directories to archive: "))
@@ -22,7 +22,7 @@ if path.exists():
             count = 0
             while count < total:
                 dir_num = int(input("Directory to archive (number): "))
-                if dir_num in options.keys():
+                if dir_num in dirs.keys():
                     dir_nums.append(dir_num)
                     count += 1
                 else:
@@ -30,7 +30,7 @@ if path.exists():
 
             archive_names = []
             for item in dir_nums:
-                archive_name = input(f"Archive name for {options[item]}: ")
+                archive_name = input(f"Archive name for {dirs[item]}: ")
                 archive_names.append(archive_name)
 
             to_archive = dict(zip(dir_nums, archive_names))
@@ -42,7 +42,7 @@ if path.exists():
                     src = str(reference[num])
                     dst = dst_path / name
                     shutil.make_archive(dst, 'zip', src)
-                    print(f"{options[num]} archived as {name}")
+                    print(f"{dirs[num]} archived as {name}")
                 else:
                     print("Destination path not found")
     else:
