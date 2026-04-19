@@ -36,15 +36,15 @@ if path.exists():
             to_archive = dict(zip(dir_nums, archive_names))
             reference = dict(zip(numbers, dir_paths))
 
-            dst_path = Path(input("Destination path: "))
-            if dst_path.exists():
-                for num, name in to_archive.items():
+            for num, name in to_archive.items():
+                dst_path = Path(input(f"Destination path for {name}: "))
+                if dst_path.exists():
                     src = str(reference[num])
                     dst = dst_path / name
                     shutil.make_archive(dst, 'zip', src)
                     print(f"{options[num]} archived as {name}")
-            else:
-                print("Destination path not found")
+                else:
+                    print("Destination path not found")
     else:
         print("No directories in path")
 else:
