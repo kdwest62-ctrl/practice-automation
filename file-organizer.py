@@ -62,19 +62,6 @@ try:
                     files_count = dict(zip(dirs_list, dirs_files))
                     for key, value in files_count.items():
                         print(f"Files moved to {key}: {value}")
-
-                    compress = input("Compress directory? (y/n): ")
-                    if compress == 'y':
-                        print(dirs_list)
-                        name = input("Directory name: ")
-                        if name in dirs_list:
-                            archive_name = input("Archive name: ")
-                            archive_dst = path / archive_name
-                            archive_src = path / name
-                            shutil.make_archive(archive_dst, 'zip', archive_src)
-                            print(f"Success! Directory {name} compressed")
-                        else:
-                            print("Directory not found")
     else:
         print("Path not found")
 except FileExistsError:
