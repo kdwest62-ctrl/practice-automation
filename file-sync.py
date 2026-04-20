@@ -4,17 +4,23 @@ from pathlib import Path
 source = Path(input("Source directory path: "))
 if source.exists():
     def get_files(dir_path):
-        return tuple(dir_path.iterdir())
+        content = []
+        for i in dir_path.iterdir():
+            if i.is_file():
+                content.append(str(i))
+        return tuple(content)
+    def get_names(dir_path):
+        names = []
+        for i in dir_path.iterdir():
+            if i.is_file():
+                names.append(str(i.name))
+        return tuple(names)
     def sync(src_files, dir_path, dir_files):
         for file in src_files:
             if file not in dir_files:
                 shutil.copy2(file, dir_path)
-    def check(src_files, dir_files):
-        if dir_files == src_files:
-            return 0
-        else:
-            return 1
 
+    source_names = get_names(source)
     source_files = get_files(source)
     if len(source_files) > 0:
         total = int(input("Number of directories to sync with source: "))
@@ -30,13 +36,18 @@ if source.exists():
                     print("Path not found")
 
             files_of_paths = []
+            file_names = []
             for item in paths:
                 files_of_paths.append(get_files(item))
-            scores = []
-            for item in files_of_paths:
-                scores.append(check(source_files, item))
+                file_names.append(get_names(item))
 
-            if sum(scores) != 0:
+            score = 0
+            for file_name in file_names:
+                if file_name != source_names:
+                    score += 1
+                else:
+                    score += 0
+            if score != 0:
                 to_sync = dict(zip(paths, files_of_paths))
                 for path, files in to_sync.items():
                     if files != source_files:
