@@ -6,7 +6,7 @@ try:
     if path.exists():
         dir_paths = []
         dir_names = []
-        for item in path.iterdir():
+        for item in path.rglob("*"):
             if item.is_dir():
                 dir_paths.append(item)
                 dir_names.append(Path(item).name)
