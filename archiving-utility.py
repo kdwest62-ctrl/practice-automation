@@ -5,17 +5,15 @@ try:
     path = Path(input("Path: "))
     if path.exists():
         dir_paths = []
-        dir_names = []
         for item in path.rglob("*"):
             if item.is_dir():
                 dir_paths.append(item)
-                dir_names.append(Path(item).name)
 
         if len(dir_paths) > 0:
             numbers = [item for item in range(len(dir_paths))]
-            dirs = dict(zip(numbers, dir_names))
-            for num, dir_name in dirs.items():
-                print(num, dir_name)
+            dirs = dict(zip(numbers, dir_paths))
+            for num, dir_path in dirs.items():
+                print(num, dir_path)
 
             total = int(input("Number of directories to archive: "))
             if total > 0:
