@@ -1,72 +1,42 @@
 from pathlib import Path
-import os
+import pandas as pd
 
-try:
-    path = Path(input("Path: "))
-    if path.exists():
-        files = []
-        single_names = []
-        duplicate_names = []
-        duplicate_paths = []
-        for item in path.rglob('*'):
-            if item.is_file():
-                files.append(item)
-        for file in files:
-            if file.name in single_names:
-                duplicate_names.append(file.name)
-            else:
-                single_names.append(file.name)
+file_name = input("File name: ")
+path = input("Search for duplicates (input path): ")
+if Path(path).exists():
+    files = []
+    for item in Path(path).rglob('*'):
+        if Path(item).is_file():
+            files.append(str(item))
 
-        if len(duplicate_names) == 0:
-            print("No duplicate files")
-        else:
-            index = 0
-            while index < len(set(duplicate_names)):
-                for file in files:
-                    if file.name == duplicate_names[index]:
-                        duplicate_paths.append(file)
-                index += 1
+    if len(files) > 0:
+        paths = []
+        for file_path in files:
+            if file_name in file_path:
+                paths.append(file_path)
 
+        if len(paths) > 1:
+            names = []
+            location = []
+            sizes = []
             nums = []
-            num = 1
-            while num <= len(duplicate_paths):
+            num = 0
+            for item in paths:
+                names.append(Path(item).name)
+                location.append(Path(item).parent)
+                sizes.append(Path(item).stat().st_size / 1024)
                 nums.append(num)
                 num += 1
 
-            duplicates_with_nums = dict(zip(nums, duplicate_paths))
-            for key, value in duplicates_with_nums.items():
-                print(key, value)
+            data = {'Number': [i for i in nums],
+                    'Location': [i for i in location],
+                    'Size (kb)': [i for i in sizes]}
+            df = pd.DataFrame(data, index=[i for i in names])
+            print(df.to_string())
 
-            show_size = input("Show file sizes? (y/n): ")
-            if show_size == 'y':
-                file_sizes = []
-                for item in duplicate_paths:
-                    size = os.path.getsize(str(item))
-                    file_sizes.append(size / 1000)
-                dict1 = dict(zip(nums, file_sizes))
-
-                for key, value in dict1.items():
-                    print(f"{key} ({value} KB)")
-
-            remove = input("Remove files? (y/n): ")
-            if remove == 'y':
-                total = int(input("Number of files to remove: "))
-                if 0 < total <= len(duplicate_paths):
-                    files_to_remove = []
-                    count = 0
-                    while count != total:
-                        file_num = int(input("Remove file (input number): "))
-                        if file_num in nums:
-                            files_to_remove.append(file_num)
-                            count += 1
-                        else:
-                            print("Number not in list")
-                    files_removed = 0
-                    for item in files_to_remove:
-                        duplicates_with_nums[item].unlink()
-                        files_removed += 1
-                    print(f"{files_removed} files removed")
+        else:
+            print("No duplicates found")
     else:
-        print("Path not found")
-except ValueError:
-    print("Please input a whole number")
+        print("No files in path")
+else:
+    print("Path does not exist")
