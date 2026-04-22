@@ -15,7 +15,7 @@ if Path(path).exists():
             if file_name in file_path:
                 paths.append(file_path)
 
-        if len(paths) > 1:
+        if len(paths) > 0:
             names = []
             location = []
             sizes = []
@@ -24,13 +24,14 @@ if Path(path).exists():
             for item in paths:
                 names.append(Path(item).name)
                 location.append(Path(item).parent)
-                sizes.append(Path(item).stat().st_size / 1024)
+                size = Path(item).stat().st_size / (1024**2)
+                sizes.append(round(size, 2))
                 nums.append(num)
                 num += 1
 
             data = {'Number': [i for i in nums],
                     'Location': [i for i in location],
-                    'Size (kb)': [i for i in sizes]}
+                    'Size (mb)': [i for i in sizes]}
             df = pd.DataFrame(data, index=[i for i in names])
             print(df.to_string())
 
