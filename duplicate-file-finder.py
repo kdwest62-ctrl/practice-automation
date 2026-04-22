@@ -35,6 +35,36 @@ if Path(path).exists():
             df = pd.DataFrame(data, index=[i for i in names])
             print(df.to_string())
 
+            remove = input("Remove duplicates? (y/n): ")
+            if remove == 'y':
+                reference = dict(zip(nums, paths))
+                decide = input("Remove all or selection? (a/s): ")
+                if decide == 'a':
+                    count = 0
+                    while count < 1:
+                        protect = int(input("Select file to protect (number only): "))
+                        if protect in reference.keys():
+                            del reference[protect]
+                            for path in reference.values():
+                                Path(path).unlink()
+                            print("All unprotected files removed")
+                            count += 1
+                        else:
+                            print("Number not in list")
+                elif decide == 's':
+                    total = int(input("How many files to remove? "))
+                    if 0 < total < len(paths):
+                        count = 0
+                        while count < total:
+                            number = int(input("Select file to remove (number only): "))
+                            if number in reference.keys():
+                                Path(reference[number]).unlink()
+                                print(f"{Path(reference[number]).name} removed")
+                                count += 1
+                            else:
+                                print("Number not in list")
+                    else:
+                        print("Invalid input")
         else:
             print("No duplicates found")
     else:
