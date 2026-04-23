@@ -15,10 +15,11 @@ if source.exists():
             if i.is_file():
                 names.append(str(i.name))
         return tuple(names)
-    def sync(src_files, dir_path, dir_files):
+    def sync(src_files, dir_path):
+        for i in Path(dir_path).iterdir():
+            Path(i).unlink()
         for file in src_files:
-            if file not in dir_files:
-                shutil.copy2(file, dir_path)
+            shutil.copy2(file, dir_path)
 
     source_names = get_names(source)
     source_files = get_files(source)
@@ -51,7 +52,7 @@ if source.exists():
                 to_sync = dict(zip(paths, files_of_paths))
                 for path, files in to_sync.items():
                     if files != source_files:
-                        sync(source_files, path, files)
+                        sync(source_files, path)
                 print("Success! Directories synced")
             else:
                 print("Directories already synced")
