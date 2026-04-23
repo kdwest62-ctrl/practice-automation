@@ -37,6 +37,7 @@ try:
                     df = pd.DataFrame(data, index=[i for i in names])
                     print(df.to_string())
 
+                    print('-' * 8)
                     remove = input("Remove duplicates? (y/n): ")
                     if remove == 'y':
                         reference = dict(zip(nums, paths))
