@@ -2,7 +2,7 @@ from pathlib import Path
 import pandas as pd
 
 file_name = input("File name: ")
-path = input("Search for duplicates (input path): ")
+path = input("Search for file (input directory path): ")
 if Path(path).exists():
     files = []
     for item in Path(path).rglob('*'):
@@ -66,7 +66,7 @@ if Path(path).exists():
                     else:
                         print("Invalid input")
         else:
-            print("No duplicates found")
+            print("No files found")
     else:
         print("No files in path")
 else:
