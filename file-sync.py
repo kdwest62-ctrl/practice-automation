@@ -1,62 +1,39 @@
 import shutil
 from pathlib import Path
 
-source = Path(input("Source directory path: "))
-if source.exists():
-    def get_files(dir_path):
-        content = []
-        for i in dir_path.iterdir():
-            if i.is_file():
-                content.append(str(i))
-        return tuple(content)
-    def get_names(dir_path):
-        names = []
-        for i in dir_path.iterdir():
-            if i.is_file():
-                names.append(str(i.name))
-        return tuple(names)
-    def sync(src_files, dir_path):
-        for i in Path(dir_path).iterdir():
-            Path(i).unlink()
-        for file in src_files:
-            shutil.copy2(file, dir_path)
+src_path = Path(input("Source directory path: "))
+if src_path.exists():
+    def get_filename(path):
+        file_names = []
+        for item in path.iterdir():
+            if item.is_file():
+                file_names.append(item.name)
+        return file_names
+    def sync(files, path):
+        for item in path.iterdir():
+            item.unlink()
+        for file in files:
+            shutil.copy2(file, path)
 
-    source_names = get_names(source)
-    source_files = get_files(source)
-    if len(source_files) > 0:
+    src_file_names = get_filename(src_path)
+    if len(src_file_names) > 0:
         total = int(input("Number of directories to sync with source: "))
         if total > 0:
-            paths = []
-            count = 1
-            while count <= total:
-                path = Path(input(f"Directory {count} path: "))
-                if path.exists():
-                    paths.append(path)
-                    count += 1
+            count = 0
+            while count < total:
+                dir_path = Path(input(f"Directory path: "))
+                if dir_path.exists():
+                    dir_file_names = get_filename(dir_path)
+                    if dir_file_names == src_file_names:
+                        print("Files in directory already synced with source")
+                    else:
+                        src_files = [item for item in src_path.iterdir() if item.is_file()]
+                        sync(src_files, dir_path)
+                        print("Success! Files synced")
+                        count += 1
                 else:
-                    print("Path not found")
-
-            files_of_paths = []
-            file_names = []
-            for item in paths:
-                files_of_paths.append(get_files(item))
-                file_names.append(get_names(item))
-
-            score = 0
-            for file_name in file_names:
-                if file_name != source_names:
-                    score += 1
-                else:
-                    score += 0
-            if score != 0:
-                to_sync = dict(zip(paths, files_of_paths))
-                for path, files in to_sync.items():
-                    if files != source_files:
-                        sync(source_files, path)
-                print("Success! Directories synced")
-            else:
-                print("Directories already synced")
+                    print("Path does not exist")
     else:
-        print("No files in path")
+        print("No files in source directory")
 else:
-    print("Path not found")
+    print("Path does not exist")
