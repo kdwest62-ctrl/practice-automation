@@ -26,6 +26,7 @@ if src_path.exists():
                     dir_file_names = get_filename(dir_path)
                     if dir_file_names == src_file_names:
                         print("Files in directory already synced with source")
+                        count += 1
                     else:
                         src_files = [item for item in src_path.iterdir() if item.is_file()]
                         sync(src_files, dir_path)
