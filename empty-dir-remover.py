@@ -33,7 +33,7 @@ try:
                         reference = dict(zip(nums, empty_dirs))
                         for num, empty_dir in reference.items():
                             print(num, empty_dir)
-                        total = int(input("How many empty directories to remove: "))
+                        total = int(input("Number of empty directories to remove: "))
                         if 0 < total <= len(empty_dirs):
                             removed = 0
                             while removed < total:
