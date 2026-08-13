@@ -1,13 +1,12 @@
 from pathlib import Path
 
 try:
-    path = Path(input("Search for empty directories (input path): "))
+    path = Path(input("Path: "))
     if path.exists():
         dirs = []
         for item in path.rglob('*'):
             if item.is_dir():
                 dirs.append(item)
-
         if len(dirs) > 0:
             empty_dirs = []
             for item in dirs:
