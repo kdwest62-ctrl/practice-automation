@@ -38,12 +38,14 @@ try:
                             removed = 0
                             while removed < total:
                                 num = int(input("Select directory (number): "))
-                                if num in reference.keys():
-                                    reference[num].rmdir()
-                                    removed += 1
-                                    print(f"{reference[num]} removed successfully")
-                                else:
-                                    print("Number not in list")
+                                confirm = input("Confirm (y/n): ")
+                                if confirm == "y":
+                                    if num in reference.keys():
+                                        reference[num].rmdir()
+                                        removed += 1
+                                        print(f"{reference[num]} removed successfully")
+                                    else:
+                                        print("Directory not found")
                         else:
                             print(f"There are {len(empty_dirs)} empty directories")
             else:
