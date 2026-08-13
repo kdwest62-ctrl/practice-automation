@@ -2,7 +2,7 @@ import shutil
 from pathlib import Path
 
 try:
-    path = Path(input("Input path (check for directories): "))
+    path = Path(input("Path: "))
     if path.exists():
         dirs = []
         dir_names = []
