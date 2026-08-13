@@ -4,7 +4,7 @@ try:
     path = Path(input("Path: "))
     if path.exists():
         dirs = []
-        for item in path.rglob('*'):
+        for item in path.rglob("*"):
             if item.is_dir():
                 dirs.append(item)
         if len(dirs) > 0:
@@ -20,13 +20,14 @@ try:
                 for item in empty_dirs:
                     print(item)
                 decide = input("Remove empty directories? (y/n): ")
-                if decide == 'y':
+                if decide == "y":
                     remove = input("Remove all or selection? (a/s): ")
-                    if remove == 'a':
+                    if remove == "a":
+                        confirm = input("Confirm (y/n): ")
                         for item in empty_dirs:
                             item.rmdir()
                             print(f"{item} removed successfully")
-                    elif remove == 's':
+                    elif remove == "s":
                         nums = [n for n in range(len(empty_dirs))]
                         reference = dict(zip(nums, empty_dirs))
                         for num, empty_dir in reference.items():
