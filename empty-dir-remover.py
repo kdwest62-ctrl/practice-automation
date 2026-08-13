@@ -24,9 +24,10 @@ try:
                     remove = input("Remove all or selection? (a/s): ")
                     if remove == "a":
                         confirm = input("Confirm (y/n): ")
-                        for item in empty_dirs:
-                            item.rmdir()
-                            print(f"{item} removed successfully")
+                        if confirm == "y":
+                            for item in empty_dirs:
+                                item.rmdir()
+                                print(f"{item} removed successfully")
                     elif remove == "s":
                         nums = [n for n in range(len(empty_dirs))]
                         reference = dict(zip(nums, empty_dirs))
